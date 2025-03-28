@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[11]:
 
 
 #Exam_fashionmnist_class_conv.ipynb
@@ -14,7 +14,7 @@ label_list = ["T-shirt/top","Trouser","Pullover","Dress","Coat","Sandal",
               "Shirt","Sneaker","Bag","Ankle boot"]
 
 
-# In[18]:
+# In[12]:
 
 
 #2. 데이터 구조 확인
@@ -22,7 +22,7 @@ print(x_train[1][14])#정규화
 print(y_train[1])#원핫인코딩
 
 
-# In[19]:
+# In[13]:
 
 
 #3. 데이터 분할
@@ -35,27 +35,27 @@ print(y_valid.shape)
 print(y_test.shape)
 
 
-# In[20]:
+# In[14]:
 
 
 #4. 데이터 셔플 및 전처리(정규화,원핫인코딩)
 import sklearn
 x_train,y_train = sklearn.utils.shuffle(x_train,y_train, random_state=123)
-x_train=x_train/255.
-x_test=x_test/255.
-x_valid=x_valid/255.
+x_train=(x_train/255.).reshape(x_train.shape[0],x_train.shape[1],x_train.shape[2],-1)
+x_test=(x_test/255.).reshape(x_test.shape[0],x_test.shape[1],x_test.shape[2],-1)
+x_valid=(x_valid/255.).reshape(x_valid.shape[0],x_valid.shape[1],x_valid.shape[2],-1)
 y_train=tf.one_hot(y_train,len(label_list))
 y_valid=tf.one_hot(y_valid,len(label_list))
 y_test=tf.one_hot(y_test,len(label_list))
-print(x_train[0][14])
-print(x_valid[0][14])
-print(x_test[0][14])
+print(x_train[0][14][:5])
+print(x_valid[0][14][:5])
+print(x_test[0][14][:5])
 print(y_train[0])
 print(y_valid[0])
 print(y_test[0])
 
 
-# In[21]:
+# In[15]:
 
 
 #5. 정답과 이미지 일치성 확인
@@ -86,7 +86,7 @@ for t,v,s in zip(t_rarr,v_rarr,s_rarr):
     
 
 
-# In[22]:
+# In[16]:
 
 
 #6. 모델 구성
@@ -94,7 +94,7 @@ from tensorflow.keras import Input,Sequential
 from tensorflow.keras.layers import Dense, Conv2D, MaxPool2D, Dropout, Flatten
 
 
-# In[23]:
+# In[17]:
 
 
 cmodel = Sequential()
@@ -112,14 +112,14 @@ cmodel.add(Dense(10,activation="softmax"))
 cmodel.compile(loss="categorical_crossentropy",optimizer="adam",metrics=["acc"])
 
 
-# In[24]:
+# In[ ]:
 
 
 fhist = cmodel.fit(x_train,y_train,validation_data=(x_valid,y_valid),\
-           epochs=30,batch_size=3000)
+           epochs=100,batch_size=3000)
 
 
-# In[25]:
+# In[ ]:
 
 
 plt.figure(figsize=(6,2))
@@ -136,7 +136,7 @@ plt.title("LOSSES")
 plt.show()
 
 
-# In[26]:
+# In[ ]:
 
 
 #모델 평가(test 데이터와 라벨을 활용) 손실도와 , 정확률 출력
@@ -144,7 +144,7 @@ lossval,accval = cmodel.evaluate(x_test,y_test)
 print("손실도: ", int(lossval*10000)/10000," 정확률:",int(accval*10000)/100,"%")
 
 
-# In[27]:
+# In[ ]:
 
 
 #예측값 시각화
@@ -163,7 +163,7 @@ plt.show()
     
 
 
-# In[28]:
+# In[ ]:
 
 
 #혼동행렬 - 예측정답과 실제정답을 일치-레이블로 변경
