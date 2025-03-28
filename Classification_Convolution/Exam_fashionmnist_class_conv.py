@@ -176,7 +176,7 @@ y_real = np.argmax(y_test,axis=1)
 y_real_pred = np.argmax(y_pred,axis=1)
 print(y_real[0])
 print(y_real_pred[0])
-y_real = [label_list for d in y_real]
+y_real = [label_list[d] for d in y_real]
 y_real_pred = []
 
 
