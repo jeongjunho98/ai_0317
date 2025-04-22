@@ -135,17 +135,9 @@ plt.legend()
 plt.title("LOSSES")
 plt.show()
 
-
-# In[ ]:
-
-
 #모델 평가(test 데이터와 라벨을 활용) 손실도와 , 정확률 출력
 lossval,accval = cmodel.evaluate(x_test,y_test)
 print("손실도: ", int(lossval*10000)/10000," 정확률:",int(accval*10000)/100,"%")
-
-
-# In[ ]:
-
 
 #예측값 시각화
 y_pred = cmodel.predict(x_test)
